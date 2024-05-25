@@ -1,0 +1,221 @@
+@startuml
+class cn.edu.ncepu.sa.Model.T_Collision {
+- WarData warData
++ <<Create>> T_Collision(WarData)
++ void run()
+}
+
+
+class cn.edu.ncepu.sa.Model.T_RunEnemyTank {
+- WarData warData
+- int width
+- int height
+- int speed
++ <<Create>> T_RunEnemyTank(WarData,int,int,int)
++ void run()
+}
+
+
+class cn.edu.ncepu.sa.Model.GameState {
++ WarData warData
++ Tank utank
++ HashSet<Element> elements
++ <<Create>> GameState(WarData)
++ <<Create>> GameState()
++ String toJsonString()
++ {static} GameState fromJsonString(String)
+}
+
+
+class cn.edu.ncepu.sa.Model.Shot {
++ double dir
++ double speed
++ double damage
++ Tank tank
++ <<Create>> Shot(Tank,double)
++ <<Create>> Shot()
++ void update(double)
++ void draw(Graphics2D)
+}
+
+
+class cn.edu.ncepu.sa.Model.Shot_High_Speed {
++ double dir
++ double speed
++ double damage
++ Tank tank
++ <<Create>> Shot_High_Speed(Tank,double)
++ <<Create>> Shot_High_Speed()
++ void update(double)
++ void draw(Graphics2D)
+}
+
+
+enum cn.edu.ncepu.sa.Model.TankTeam {
++  RED
++  BLUE
+}
+
+enum cn.edu.ncepu.sa.Model.Directions {
++  UP
++  DOWN
++  LEFT
++  RIGHT
+- String name
+- double angleValue
+~ <<Create>> Directions(String,double)
++ String getName()
++ double getAngleValue()
+}
+
+
+class cn.edu.ncepu.sa.Model.Tank {
++ double dir
++ double turretDir
++ boolean moving
++ long moveSteps
++ double speed
++ double hp
++ double hpmax
++ double hp_recovery_per_sec
++ int team
++ int killNum
++ int shotNum
++ String name
++ double lastX
++ double lastY
++ <<Create>> Tank()
++ <<Create>> Tank(int,int,double,double,double,int,int,String)
++ boolean damage(double)
++ void addKillNum()
++ int getKillNum()
++ void addShotNum()
++ void subShotNum()
++ int getShotNum()
++ int getTeam()
++ void update(double)
++ void move(double,double)
++ void cancelMove()
++ void recoverLife()
++ void draw(Graphics2D)
+}
+
+
+class cn.edu.ncepu.sa.Model.WarDataSingleton {
+- {static} WarData warData
++ <<Create>> WarDataSingleton()
++ {static} WarData getInstance()
+}
+
+
+class cn.edu.ncepu.sa.Model.GameSave {
++ {static} void saveGame(GameState,String)
+}
+
+interface cn.edu.ncepu.sa.Model.IElement {
++ void draw(Graphics2D)
++ void destroy()
+}
+
+class cn.edu.ncepu.sa.Model.Mapc {
++ Terrain[][] terrains
++ {static} int width
++ {static} int height
++ <<Create>> Mapc()
++ <<Create>> Mapc(int,int)
++ <<Create>> Mapc(int)
++ int getHeight()
++ int getWidth()
++ boolean isGrass(int,int)
++ boolean isRiver(int,int)
+}
+
+
+class cn.edu.ncepu.sa.Model.Element {
++ double x
++ double y
++ int width
++ int height
++ boolean Destroyed
++ boolean Viewed
++ double tx
++ double ty
++ <<Create>> Element()
++ boolean isDestroyed()
++ void update(double)
++ void draw(Graphics2D)
++ void destroy()
++ void move(double,double)
++ double distance(Element)
++ double angle(Element)
++ double angle(int,int)
++ Rectangle getRect()
+}
+
+
+class cn.edu.ncepu.sa.Model.ImageCache {
+- {static} Map<String,BufferedImage> map
++ {static} BufferedImage get(String)
++ {static} BufferedImage load(String,String)
++ {static} BufferedImage readImage(String)
+}
+
+
+enum cn.edu.ncepu.sa.Model.Terrain {
++  GRASS
++  RIVER
++  PLAINS
+}
+
+class cn.edu.ncepu.sa.Model.ThreadPool {
++ ExecutorService executorService
+- int maxThreadNum
++ <<Create>> ThreadPool()
+}
+
+
+class cn.edu.ncepu.sa.Model.GameLoad {
++ {static} GameState loadGame(String)
+}
+
+class cn.edu.ncepu.sa.Model.WarData {
++ HashSet<Element> elements
++ Tank userTank
++ int enemyMoveGap
++ int enemyAttackRange
++ int maxAmmoNum
++ int MaxGrass
++ int MaxRiver
++ Mapc mapc
++ <<Create>> WarData()
++ void setUserTank()
++ void AddAEnemyTank(int,int,double,double,double,int,int,String)
++ void AddSomeEnemyTanks()
++ void AddEnemyTankAgain()
++ void runEnemyTank(int,int,int)
++ void updatePositions(double)
++ void regularSpawning()
++ int isEnd()
++ int getUserKillNum()
++ void CollisionDetection()
++ void updateDataSet()
+}
+
+
+class cn.edu.ncepu.sa.Model.T_UpdateDataSet {
+- WarData warData
++ <<Create>> T_UpdateDataSet(WarData)
++ void run()
+}
+
+
+
+
+cn.edu.ncepu.sa.Model.Runnable <|.. cn.edu.ncepu.sa.Model.T_Collision
+cn.edu.ncepu.sa.Model.Runnable <|.. cn.edu.ncepu.sa.Model.T_RunEnemyTank
+cn.edu.ncepu.sa.Model.Element <|-- cn.edu.ncepu.sa.Model.Shot
+cn.edu.ncepu.sa.Model.Element <|-- cn.edu.ncepu.sa.Model.Shot_High_Speed
+cn.edu.ncepu.sa.Model.Element <|-- cn.edu.ncepu.sa.Model.Tank
+cn.edu.ncepu.sa.Model.IElement <|.. cn.edu.ncepu.sa.Model.Element
+cn.edu.ncepu.sa.Model.Runnable <|.. cn.edu.ncepu.sa.Model.T_UpdateDataSet
+@enduml

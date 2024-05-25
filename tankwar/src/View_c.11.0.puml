@@ -1,0 +1,89 @@
+@startuml
+class cn.edu.ncepu.sa.GameView.TankDraw {
+- Tank tank
++ <<Create>> TankDraw(Tank)
++ void draw(Graphics2D)
+}
+
+
+class cn.edu.ncepu.sa.GameView.GameEndPanel {
+- JButton replayButton
+- JButton exitButton
++ <<Create>> GameEndPanel(String,String,int)
+}
+
+
+class cn.edu.ncepu.sa.GameView.GameView {
+~ WarData warData
++ GamePanel panel
++ int width
++ int height
+- int _frames
+- float _dt
+- float _frameRate
++ <<Create>> GameView(WarData)
++ void update(double)
+}
+
+
+class cn.edu.ncepu.sa.GameView.Shot_High_SpeedDraw {
+- Shot_High_Speed shot
++ void draw(Graphics2D)
+}
+
+
+class cn.edu.ncepu.sa.GameView.EleDraw {
++ {static} void draw(Graphics2D,Shot_High_Speed)
++ {static} void draw(Graphics2D,Shot)
++ {static} void draw(Graphics2D,Tank)
+}
+
+class cn.edu.ncepu.sa.GameView.MapDraw {
++ {static} int tile
++ {static} void draw(Graphics2D,Mapc)
+}
+
+
+class cn.edu.ncepu.sa.GameView.GamePanel {
+- WarData warData
+- boolean flag
+- double frameRate
++ long gameStartTime
++ void setWarData(WarData)
++ void setFrameRate(double)
++ void paint(Graphics)
+}
+
+
+class cn.edu.ncepu.sa.GameView.GameStartPanel {
+- JButton newGameButton
+- JButton loadGameButton
+- boolean gameStar
++ <<Create>> GameStartPanel()
++ JButton getNewGameButton()
++ JButton getLoadGameButton()
++ boolean isGameStar()
+}
+
+
+interface cn.edu.ncepu.sa.GameView.Idraw {
++ void draw(Graphics2D)
+}
+
+class cn.edu.ncepu.sa.GameView.ShotDraw {
+- Shot shot
++ void draw(Graphics2D)
+}
+
+
+
+
+cn.edu.ncepu.sa.GameView.Idraw <|.. cn.edu.ncepu.sa.GameView.TankDraw
+cn.edu.ncepu.sa.GameView.JFrame <|-- cn.edu.ncepu.sa.GameView.GameEndPanel
+cn.edu.ncepu.sa.GameView.JFrame <|-- cn.edu.ncepu.sa.GameView.GameView
+cn.edu.ncepu.sa.GameView.Idraw <|.. cn.edu.ncepu.sa.GameView.Shot_High_SpeedDraw
+cn.edu.ncepu.sa.GameView.JPanel <|-- cn.edu.ncepu.sa.GameView.MapDraw
+cn.edu.ncepu.sa.GameView.JPanel <|-- cn.edu.ncepu.sa.GameView.GamePanel
+cn.edu.ncepu.sa.GameView.JFrame <|-- cn.edu.ncepu.sa.GameView.GameStartPanel
+cn.edu.ncepu.sa.GameView.Idraw <|.. cn.edu.ncepu.sa.GameView.ShotDraw
+@enduml

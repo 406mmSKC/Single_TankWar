@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="tankwar:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/tankwar_jar</output-path>
+    <root id="archive" name="tankwar.jar">
+      <element id="module-output" name="tankwar" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../fastjson-1.2.83.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

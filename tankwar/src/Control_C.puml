@@ -1,0 +1,34 @@
+@startuml
+class cn.edu.ncepu.sa.Control.GameStart_and_End {
++ {static} void newStart()
++ {static} void settleGame(WarData,GameView,ThreadPool)
+}
+
+class cn.edu.ncepu.sa.Control.GameSave_and_Load {
++ {static} void clickLoad()
++ {static} void clickSave(WarData)
+}
+
+class cn.edu.ncepu.sa.Control.Main {
++ {static} void main(String[])
+}
+
+class cn.edu.ncepu.sa.Control.WarControl {
+~ GameView win
+~ WarData warData
+~ ThreadPool executor
+- int maxAmmoNum
+- int ShotSpeed
+- int HighShotSpeed
+- int SpawningTime
++ <<Create>> WarControl()
++ <<Create>> WarControl(GameView,WarData)
++ void StartWar(GameView,WarData)
++ void run()
+}
+
+
+
+
+cn.edu.ncepu.sa.Control.Thread <|-- cn.edu.ncepu.sa.Control.WarControl
+@enduml

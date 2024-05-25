@@ -1,0 +1,338 @@
+@startuml
+class cn.edu.ncepu.sa.GameView.Shot_High_SpeedDraw {
+- Shot_High_Speed shot
++ void draw(Graphics2D)
+}
+
+
+class cn.edu.ncepu.sa.GameView.GameEndPanel {
++ <<Create>> GameEndPanel(String,String,int)
+}
+
+class cn.edu.ncepu.sa.Control.GameStart_and_End {
++ {static} void newStart()
++ {static} void settleGame(WarData,GameView,ThreadPool)
+}
+
+class cn.edu.ncepu.sa.Model.Shot {
++ double dir
++ double speed
++ double damage
++ Tank tank
++ <<Create>> Shot(Tank,double)
++ <<Create>> Shot()
++ void update(double)
++ void draw(Graphics2D)
+}
+
+
+class cn.edu.ncepu.sa.Control.GameSave_and_Load {
++ {static} void clickLoad()
++ {static} void clickSave(WarData)
+}
+
+class cn.edu.ncepu.sa.Model.Shot_High_Speed {
++ double dir
++ double speed
++ double damage
++ Tank tank
++ <<Create>> Shot_High_Speed(Tank,double)
++ <<Create>> Shot_High_Speed()
++ void update(double)
++ void draw(Graphics2D)
+}
+
+
+enum cn.edu.ncepu.sa.Model.Directions {
++  UP
++  DOWN
++  LEFT
++  RIGHT
+- String name
+- double angleValue
+~ <<Create>> Directions(String,double)
++ String getName()
++ double getAngleValue()
+}
+
+
+class cn.edu.ncepu.sa.Model.Tank {
++ double dir
++ double turretDir
++ boolean moving
++ long moveSteps
++ double speed
++ double hp
++ double hpmax
++ double hp_recovery_per_sec
++ int team
++ int killNum
++ int shotNum
++ String name
++ double lastX
++ double lastY
++ <<Create>> Tank()
++ <<Create>> Tank(int,int,double,double,double,int,int,String)
++ boolean damage(double)
++ void addKillNum()
++ int getKillNum()
++ void addShotNum()
++ void subShotNum()
++ int getShotNum()
++ int getTeam()
++ void update(double)
++ void move(double,double)
++ void cancelMove()
++ void recoverLife()
++ void draw(Graphics2D)
+}
+
+
+class cn.edu.ncepu.sa.GameView.ShotDraw {
+- Shot shot
++ void draw(Graphics2D)
+}
+
+
+class cn.edu.ncepu.sa.Model.WarDataSingleton {
+- {static} WarData warData
++ <<Create>> WarDataSingleton()
++ {static} WarData getInstance()
+}
+
+
+class cn.edu.ncepu.sa.Model.GameSave {
++ {static} void saveGame(GameState,String)
+}
+
+class cn.edu.ncepu.sa.GameView.EleDraw {
++ {static} void draw(Graphics2D,Shot_High_Speed)
++ {static} void draw(Graphics2D,Shot)
++ {static} void draw(Graphics2D,Tank)
+}
+
+class cn.edu.ncepu.sa.Control.Main {
++ {static} void main(String[])
+}
+
+class cn.edu.ncepu.sa.Model.Element {
++ double x
++ double y
++ int width
++ int height
++ boolean Destroyed
++ boolean Viewed
++ double tx
++ double ty
++ <<Create>> Element()
++ boolean isDestroyed()
++ void update(double)
++ void draw(Graphics2D)
++ void destroy()
++ void move(double,double)
++ double distance(Element)
++ double angle(Element)
++ double angle(int,int)
++ Rectangle getRect()
+}
+
+
+class cn.edu.ncepu.sa.Model.ImageCache {
+- {static} Map<String,BufferedImage> map
++ {static} BufferedImage get(String)
++ {static} BufferedImage load(String,String)
++ {static} BufferedImage readImage(String)
+}
+
+
+class cn.edu.ncepu.sa.Model.GameLoad {
++ {static} GameState loadGame(String)
+}
+
+class cn.edu.ncepu.sa.Model.T_Collision {
+- WarData warData
++ <<Create>> T_Collision(WarData)
++ void run()
+}
+
+
+class cn.edu.ncepu.sa.Model.T_RunEnemyTank {
+- WarData warData
+- int width
+- int height
+- int speed
++ <<Create>> T_RunEnemyTank(WarData,int,int,int)
++ void run()
+}
+
+
+class cn.edu.ncepu.sa.Model.GameState {
++ WarData warData
++ Tank utank
++ HashSet<Element> elements
++ <<Create>> GameState(WarData)
++ <<Create>> GameState()
++ String toJsonString()
++ {static} GameState fromJsonString(String)
+}
+
+
+class cn.edu.ncepu.sa.GameView.GameStartPanel {
+- JButton newGameButton
+- JButton loadGameButton
+- boolean gameStar
++ <<Create>> GameStartPanel()
++ JButton getNewGameButton()
++ JButton getLoadGameButton()
++ boolean isGameStar()
+}
+
+
+class cn.edu.ncepu.sa.GameView.GamePanel {
+- WarData warData
+- boolean flag
+- double frameRate
++ long gameStartTime
++ void setWarData(WarData)
++ void setFrameRate(double)
++ void paint(Graphics)
+}
+
+
+enum cn.edu.ncepu.sa.Model.TankTeam {
++  RED
++  BLUE
+}
+
+class cn.edu.ncepu.sa.utils.Utils {
++ {static} BufferedImage rotateImage(BufferedImage,int)
++ {static} BufferedImage resizeImage(BufferedImage,int,int)
++ {static} BufferedImage flipImage(BufferedImage)
++ {static} double ppDir(double,double,double,double)
+}
+
+interface cn.edu.ncepu.sa.Model.IElement {
++ void draw(Graphics2D)
++ void destroy()
+}
+
+class cn.edu.ncepu.sa.GameView.TankDraw {
+- Tank tank
++ <<Create>> TankDraw(Tank)
++ void draw(Graphics2D)
+}
+
+
+class cn.edu.ncepu.sa.GameView.GameView {
+~ WarData warData
++ GamePanel panel
++ int width
++ int height
+- int _frames
+- float _dt
+- float _frameRate
++ <<Create>> GameView(WarData)
++ void update(double)
+}
+
+
+class cn.edu.ncepu.sa.GameView.MapDraw {
++ {static} int tile
++ {static} void draw(Graphics2D,Mapc)
+}
+
+
+class cn.edu.ncepu.sa.Model.Mapc {
++ Terrain[][] terrains
++ {static} int width
++ {static} int height
++ <<Create>> Mapc()
++ <<Create>> Mapc(int,int)
++ <<Create>> Mapc(int)
++ int getHeight()
++ int getWidth()
++ boolean isGrass(int,int)
++ boolean isRiver(int,int)
+}
+
+
+interface cn.edu.ncepu.sa.GameView.Idraw {
++ void draw(Graphics2D)
+}
+
+class cn.edu.ncepu.sa.Control.WarControl {
+~ GameView win
+~ WarData warData
+~ ThreadPool executor
+- int maxAmmoNum
+- int ShotSpeed
+- int HighShotSpeed
+- int SpawningTime
++ <<Create>> WarControl()
++ <<Create>> WarControl(GameView,WarData)
++ void StartWar(GameView,WarData)
++ void run()
+}
+
+
+enum cn.edu.ncepu.sa.Model.Terrain {
++  GRASS
++  RIVER
++  PLAINS
+}
+
+class cn.edu.ncepu.sa.Model.ThreadPool {
++ ExecutorService executorService
+- int maxThreadNum
++ <<Create>> ThreadPool()
+}
+
+
+class cn.edu.ncepu.sa.Model.WarData {
++ HashSet<Element> elements
++ Tank userTank
++ int enemyMoveGap
++ int enemyAttackRange
++ int maxAmmoNum
++ int MaxGrass
++ int MaxRiver
++ Mapc mapc
++ <<Create>> WarData()
++ void setUserTank()
++ void AddAEnemyTank(int,int,double,double,double,int,int,String)
++ void AddSomeEnemyTanks()
++ void AddEnemyTankAgain()
++ void runEnemyTank(int,int,int)
++ void updatePositions(double)
++ void regularSpawning()
++ int isEnd()
++ int getUserKillNum()
++ void CollisionDetection()
++ void updateDataSet()
+}
+
+
+class cn.edu.ncepu.sa.Model.T_UpdateDataSet {
+- WarData warData
++ <<Create>> T_UpdateDataSet(WarData)
++ void run()
+}
+
+
+
+
+cn.edu.ncepu.sa.GameView.JFrame <|-- cn.edu.ncepu.sa.GameView.GameEndPanel
+cn.edu.ncepu.sa.Model.Element <|-- cn.edu.ncepu.sa.Model.Shot
+cn.edu.ncepu.sa.Model.Element <|-- cn.edu.ncepu.sa.Model.Shot_High_Speed
+cn.edu.ncepu.sa.Model.Element <|-- cn.edu.ncepu.sa.Model.Tank
+cn.edu.ncepu.sa.Model.IElement <|.. cn.edu.ncepu.sa.Model.Element
+cn.edu.ncepu.sa.Model.Runnable <|.. cn.edu.ncepu.sa.Model.T_Collision
+cn.edu.ncepu.sa.Model.Runnable <|.. cn.edu.ncepu.sa.Model.T_RunEnemyTank
+cn.edu.ncepu.sa.GameView.JFrame <|-- cn.edu.ncepu.sa.GameView.GameStartPanel
+cn.edu.ncepu.sa.GameView.JPanel <|-- cn.edu.ncepu.sa.GameView.GamePanel
+cn.edu.ncepu.sa.GameView.Idraw <|.. cn.edu.ncepu.sa.GameView.TankDraw
+cn.edu.ncepu.sa.GameView.JFrame <|-- cn.edu.ncepu.sa.GameView.GameView
+cn.edu.ncepu.sa.GameView.JPanel <|-- cn.edu.ncepu.sa.GameView.MapDraw
+cn.edu.ncepu.sa.Control.Thread <|-- cn.edu.ncepu.sa.Control.WarControl
+cn.edu.ncepu.sa.Model.Runnable <|.. cn.edu.ncepu.sa.Model.T_UpdateDataSet
+@enduml
